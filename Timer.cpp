@@ -9,6 +9,8 @@ Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running
 
 void Timer::StartPomodoro()
 {
+    running = true;
+
     minut = 24;
     second = 59;
 
@@ -18,6 +20,8 @@ void Timer::StartPomodoro()
 
 void Timer::StartBreak()
 {
+    running = true;
+
     minut = 4;
     second = 59;
 
@@ -27,7 +31,16 @@ void Timer::StartBreak()
 
 void Timer::Pause()
 {
-
+    if(running)
+    {
+        timer->stop();
+        running = false;
+    }
+    else
+    {
+        timer->start();
+        running = true;
+    }
 }
 
 void Timer::Count()
