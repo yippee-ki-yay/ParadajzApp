@@ -14,6 +14,12 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     historyList = new QListWidget(centralWidget);
 
+    historyFile = new QFile("./history.txt", centralWidget);
+
+    historyFile->open(QIODevice::WriteOnly | QIODevice::Text);
+
+    historyStream = new QTextStream(historyFile);
+
     centralLayout->addWidget(timer);
     centralLayout->addLayout(buttonLayout);
     centralLayout->addWidget(historyList);
@@ -21,6 +27,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
     connect(startButton, SIGNAL(clicked()), timer, SLOT(StartPomodoro()));
     connect(pauseButton, SIGNAL(clicked()), timer, SLOT(Pause()));
     connect(breakButton, SIGNAL(clicked()), timer, SLOT(StartBreak()));
+    connect(timer, SIGNAL(FinishedPomodoro()), this, SLOT(AddToFile()));
 
 
     setCentralWidget(centralWidget);
@@ -40,4 +47,9 @@ void MainWindow::SetButtons()
     buttonLayout->addWidget(pauseButton);
     buttonLayout->addWidget(breakButton);
 
+}
+
+void MainWindow::AddToFile()
+{
+    *historyStream << "Pomodoro\n";
 }

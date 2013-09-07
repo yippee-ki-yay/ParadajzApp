@@ -50,6 +50,7 @@ void Timer::Count()
     if(minut == 0 && second == 0)
     {
         timer->stop();
+        emit FinishedPomodoro();
     }
 
     //convert num to str for displaying on timer

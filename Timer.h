@@ -20,6 +20,9 @@ public slots:
 private slots:
     void Count();
 
+signals:
+    void FinishedPomodoro();
+
 private:
     QTimer* timer;
 

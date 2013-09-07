@@ -9,6 +9,8 @@
 #include <QListWidgetItem>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFile>
+#include <QTextStream>
 
 #include "Timer.h"
 
@@ -18,10 +20,16 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget* parent = 0);
+
+public slots:
+    void AddToFile();
+
 private:
     void SetButtons();
 
     Timer* timer;
+    QFile* historyFile;
+    QTextStream* historyStream;
 
     QListWidget* historyList;
 
