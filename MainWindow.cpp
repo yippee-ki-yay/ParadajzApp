@@ -14,9 +14,9 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     historyList = new QListWidget(centralWidget);
 
-    historyFile = new QFile("./history.txt", centralWidget);
+    historyFile = new QFile("history.txt", centralWidget);
 
-    historyFile->open(QIODevice::WriteOnly | QIODevice::Text);
+    historyFile->open(QFile::Text | QFile::Append);
 
     historyStream = new QTextStream(historyFile);
 
@@ -51,5 +51,12 @@ void MainWindow::SetButtons()
 
 void MainWindow::AddToFile()
 {
-    *historyStream << "Pomodoro\n";
+
+    QString pomodoroStr = "Pomodoro finished  ";
+    QDateTime currDate = QDateTime::currentDateTime();
+    QString dateStr = currDate.toString("dd.MM.yy  hh:mm");
+
+    historyList->addItem(pomodoroStr + dateStr);
+
+    *historyStream << pomodoroStr << dateStr << "\n";
 }

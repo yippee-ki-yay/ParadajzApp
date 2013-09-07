@@ -1,9 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <iostream>  //FOR TESTING REMOVE
+
 #include <QMainWindow>
 #include <QWidget>
 
+#include <QDateTime>
+#include <QStringList>
 #include <QPushButton>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -32,6 +36,7 @@ private:
     QTextStream* historyStream;
 
     QListWidget* historyList;
+    QStringList* historyStrList;
 
     QVBoxLayout* centralLayout;
     QHBoxLayout* buttonLayout;

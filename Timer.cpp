@@ -4,7 +4,11 @@ Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running
 {
     timer = new QTimer(this);
 
+    setSegmentStyle(QLCDNumber::Filled);
+
     display("00:00");
+
+    setMinimumSize(400, 200);
 }
 
 void Timer::StartPomodoro()
@@ -14,7 +18,7 @@ void Timer::StartPomodoro()
     minut = 24;
     second = 59;
 
-    timer->start(1000);
+    timer->start(1);
     connect(timer, SIGNAL(timeout()), this, SLOT(Count()));
 }
 
