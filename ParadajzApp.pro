@@ -1,4 +1,5 @@
-
+Qt += phonon
+LIBS += -lphonon
 SOURCES += \
     main.cpp \
     MainWindow.cpp \

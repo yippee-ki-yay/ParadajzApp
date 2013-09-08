@@ -3,6 +3,7 @@
 Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running(false)
 {
     timer = new QTimer(this);
+    timer->setInterval(1);
 
     setSegmentStyle(QLCDNumber::Filled);
 
@@ -18,8 +19,8 @@ void Timer::StartPomodoro()
     minut = 24;
     second = 59;
 
-    timer->start(1);
-    connect(timer, SIGNAL(timeout()), this, SLOT(Count()));
+    timer->start();
+    connect(timer, SIGNAL(timeout()), this, SLOT(Count()), Qt::UniqueConnection);
 }
 
 void Timer::StartBreak()
@@ -29,8 +30,8 @@ void Timer::StartBreak()
     minut = 4;
     second = 59;
 
-    timer->start(1000);
-    connect(timer, SIGNAL(timeout()), this, SLOT(Count()));
+    timer->start();
+    connect(timer, SIGNAL(timeout()), this, SLOT(Count()), Qt::UniqueConnection);
 }
 
 void Timer::Pause()
@@ -51,7 +52,7 @@ void Timer::Count()
 {
 
     //if we reaches 00:00 end timer
-    if(minut == 0 && second == 0)
+    if(minut == 0 && second <= 0)
     {
         timer->stop();
         emit FinishedPomodoro();

@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     SetButtons();
 
+    dingMedia = Phonon::createPlayer(Phonon::MusicCategory,
+                                     Phonon::MediaSource("bell-ring.mp3"));
+
     centralLayout = new QVBoxLayout;
 
     timer = new Timer(centralWidget);
@@ -16,9 +19,11 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     historyFile = new QFile("history.txt", centralWidget);
 
-    historyFile->open(QFile::Text | QFile::Append);
+    historyFile->open(QFile::Text | QFile::Append | QFile::ReadWrite);
 
     historyStream = new QTextStream(historyFile);
+
+    LoadHistory();
 
     centralLayout->addWidget(timer);
     centralLayout->addLayout(buttonLayout);
@@ -52,6 +57,9 @@ void MainWindow::SetButtons()
 void MainWindow::AddToFile()
 {
 
+
+    dingMedia->play();
+
     QString pomodoroStr = "Pomodoro finished  ";
     QDateTime currDate = QDateTime::currentDateTime();
     QString dateStr = currDate.toString("dd.MM.yy  hh:mm");
@@ -59,4 +67,14 @@ void MainWindow::AddToFile()
     historyList->addItem(pomodoroStr + dateStr);
 
     *historyStream << pomodoroStr << dateStr << "\n";
+}
+
+void MainWindow::LoadHistory()
+{
+
+    while(!historyStream->atEnd())
+    {
+        std::cout<<"Anybody\n"; //TEST
+        historyList->addItem("fuk yeah");
+    }
 }

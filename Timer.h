@@ -1,6 +1,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
+#include <iostream>   //TESTING REMOVE
+
 #include <QLCDNumber>
 #include <QTimer>
 #include <QString>

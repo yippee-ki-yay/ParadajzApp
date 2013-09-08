@@ -3,6 +3,9 @@
 
 #include <iostream>  //FOR TESTING REMOVE
 
+#include <phonon/MediaObject>
+//#include <phonon/MediaSource>
+
 #include <QMainWindow>
 #include <QWidget>
 
@@ -30,6 +33,9 @@ public slots:
 
 private:
     void SetButtons();
+    void LoadHistory();
+
+    Phonon::MediaObject* dingMedia;
 
     Timer* timer;
     QFile* historyFile;
