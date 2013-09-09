@@ -1,6 +1,7 @@
 #include "Timer.h"
 
-Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running(false)
+Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running(false),
+    curr_state(NONE)
 {
     timer = new QTimer(this);
     timer->setInterval(1);
@@ -15,6 +16,7 @@ Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running
 void Timer::StartPomodoro()
 {
     running = true;
+    curr_state = POMODORO;
 
     minut = 24;
     second = 59;
@@ -26,6 +28,8 @@ void Timer::StartPomodoro()
 void Timer::StartBreak()
 {
     running = true;
+
+    curr_state = BREAK;
 
     minut = 4;
     second = 59;
@@ -55,7 +59,12 @@ void Timer::Count()
     if(minut == 0 && second <= 0)
     {
         timer->stop();
-        emit FinishedPomodoro();
+
+
+        if(curr_state == POMODORO)
+            emit FinishedPomodoro();
+        if(curr_state == BREAK)
+            emit FinishedBreak();
     }
 
     //convert num to str for displaying on timer

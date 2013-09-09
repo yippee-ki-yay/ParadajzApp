@@ -14,6 +14,8 @@ class Timer : public QLCDNumber
 public:
     Timer(QWidget* parent = 0);
 
+    enum state{POMODORO, BREAK, NONE};
+
 public slots:
     void StartPomodoro();
     void StartBreak();
@@ -24,12 +26,14 @@ private slots:
 
 signals:
     void FinishedPomodoro();
+    void FinishedBreak();
 
 private:
     QTimer* timer;
 
     int minut, second;
     bool running;
+    state curr_state;
 };
 
 #endif // TIMER_H

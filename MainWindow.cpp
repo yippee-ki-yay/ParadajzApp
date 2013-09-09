@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
     connect(pauseButton, SIGNAL(clicked()), timer, SLOT(Pause()));
     connect(breakButton, SIGNAL(clicked()), timer, SLOT(StartBreak()));
     connect(timer, SIGNAL(FinishedPomodoro()), this, SLOT(AddToFile()));
+    connect(timer, SIGNAL(FinishedBreak()), this, SLOT(AlertForBreak()));
 
 
     setCentralWidget(centralWidget);
@@ -57,7 +58,6 @@ void MainWindow::SetButtons()
 void MainWindow::AddToFile()
 {
 
-
     dingMedia->play();
 
     QString pomodoroStr = "Pomodoro finished  ";
@@ -69,12 +69,17 @@ void MainWindow::AddToFile()
     *historyStream << pomodoroStr << dateStr << "\n";
 }
 
+void MainWindow::AlertForBreak()
+{
+    dingMedia->play();
+}
+
 void MainWindow::LoadHistory()
 {
-
+/*
     while(!historyStream->atEnd())
     {
         std::cout<<"Anybody\n"; //TEST
         historyList->addItem("fuk yeah");
-    }
+    }*/
 }

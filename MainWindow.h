@@ -30,6 +30,7 @@ public:
 
 public slots:
     void AddToFile();
+    void AlertForBreak();
 
 private:
     void SetButtons();
