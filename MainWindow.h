@@ -40,6 +40,7 @@ private:
 
     Timer* timer;
     QFile* historyFile;
+    QFile* readHistoryFile;
     QTextStream* historyStream;
 
     QListWidget* historyList;

@@ -19,6 +19,10 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     historyFile = new QFile("history.txt", centralWidget);
 
+    readHistoryFile = new QFile("history.txt", centralWidget);
+
+    readHistoryFile->open(QFile::ReadOnly);
+
     historyFile->open(QFile::Text | QFile::Append | QFile::ReadWrite);
 
     historyStream = new QTextStream(historyFile);
@@ -64,7 +68,7 @@ void MainWindow::AddToFile()
     QDateTime currDate = QDateTime::currentDateTime();
     QString dateStr = currDate.toString("dd.MM.yy  hh:mm");
 
-    historyList->addItem(pomodoroStr + dateStr);
+    historyList->insertItem(0, pomodoroStr + dateStr);
 
     *historyStream << pomodoroStr << dateStr << "\n";
 }
@@ -76,10 +80,33 @@ void MainWindow::AlertForBreak()
 
 void MainWindow::LoadHistory()
 {
-/*
-    while(!historyStream->atEnd())
+    QTextStream loadEntries(readHistoryFile);
+
+    /*
+     //Load just todays pomodoros WORK IN PROGRESS
+    QString tmp;
+
+    QDateTime currDate = QDateTime::currentDateTime();
+    QString yeah = currDate.toString("dd.MM.yy");
+
+    while(!loadEntries.atEnd())
     {
-        std::cout<<"Anybody\n"; //TEST
-        historyList->addItem("fuk yeah");
+        tmp = loadEntries.readLine();
+        QDateTime tmpDate = QDateTime::fromString(tmp, "dd.MM.yy  hh:mm");
+        QString wtf = tmpDate.toString("dd.MM.yy");
+
+        if(yeah != wtf)
+        {
+            historyList->addItem(loadEntries.readLine());
+        }
+
     }*/
+
+
+    //reads all history
+    while(!loadEntries.atEnd())
+    {
+        historyList->addItem(loadEntries.readLine());
+    }
+
 }
