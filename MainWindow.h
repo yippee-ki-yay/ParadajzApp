@@ -2,9 +2,9 @@
 #define MAINWINDOW_H
 
 #include <iostream>  //FOR TESTING REMOVE
+#include <QDebug>
 
 #include <phonon/MediaObject>
-//#include <phonon/MediaSource>
 
 #include <QMainWindow>
 #include <QWidget>
@@ -18,6 +18,9 @@
 #include <QHBoxLayout>
 #include <QFile>
 #include <QTextStream>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
 
 #include "Timer.h"
 
@@ -27,16 +30,26 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget* parent = 0);
+    ~MainWindow();
 
 public slots:
     void AddToFile();
     void AlertForBreak();
 
 private:
-    void SetButtons();
     void LoadHistory();
 
+    void Init();
+    void SetConnections();
+    void SetUi();
+
     Phonon::MediaObject* dingMedia;
+
+    QWidget* centralWidget;
+    QMenu* settingsMenu;
+    QMenuBar* bar;
+    QAction* settingsAction;
+    QAction* quitAction;
 
     Timer* timer;
     QFile* historyFile;
@@ -52,6 +65,8 @@ private:
     QPushButton* startButton;
     QPushButton* pauseButton;
     QPushButton* breakButton;
+
+    QPixmap* gearPix;
 
 };
 

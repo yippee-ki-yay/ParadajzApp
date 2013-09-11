@@ -1,15 +1,41 @@
 #include "MainWindow.h"
 
-
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
+    Init();
 
-    QWidget* centralWidget = new QWidget;
+    SetUi();
 
-    SetButtons();
+    LoadHistory();
+
+    SetConnections();
+
+}
+
+MainWindow::~MainWindow()
+{
+    historyFile->close();
+    readHistoryFile->close();
+
+    delete gearPix;
+}
+
+void MainWindow::Init()
+{
+    centralWidget = new QWidget;
 
     dingMedia = Phonon::createPlayer(Phonon::MusicCategory,
                                      Phonon::MediaSource("bell-ring.mp3"));
+
+    gearPix = new QPixmap("gear.png");
+
+    settingsAction = new QAction(*gearPix, "&Settings", centralWidget);
+
+    quitAction = new QAction("Quit", centralWidget);
+
+    settingsMenu = menuBar()->addMenu("&Pomodoro");
+    settingsMenu->addAction(settingsAction);
+    settingsMenu->addAction(quitAction);
 
     centralLayout = new QVBoxLayout;
 
@@ -27,41 +53,44 @@ MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 
     historyStream = new QTextStream(historyFile);
 
-    LoadHistory();
-
-    centralLayout->addWidget(timer);
-    centralLayout->addLayout(buttonLayout);
-    centralLayout->addWidget(historyList);
-
-    connect(startButton, SIGNAL(clicked()), timer, SLOT(StartPomodoro()));
-    connect(pauseButton, SIGNAL(clicked()), timer, SLOT(Pause()));
-    connect(breakButton, SIGNAL(clicked()), timer, SLOT(StartBreak()));
-    connect(timer, SIGNAL(FinishedPomodoro()), this, SLOT(AddToFile()));
-    connect(timer, SIGNAL(FinishedBreak()), this, SLOT(AlertForBreak()));
-
-
-    setCentralWidget(centralWidget);
-
-    centralWidget->setLayout(centralLayout);
-}
-
-void MainWindow::SetButtons()
-{
     buttonLayout = new QHBoxLayout;
 
     startButton = new QPushButton("Start");
     pauseButton = new QPushButton("Pause");
     breakButton = new QPushButton("Break");
 
+}
+
+void MainWindow::SetUi()
+{
+
+    centralLayout->addWidget(timer);
+    centralLayout->addLayout(buttonLayout);
+    centralLayout->addWidget(historyList);
+
     buttonLayout->addWidget(startButton);
     buttonLayout->addWidget(pauseButton);
     buttonLayout->addWidget(breakButton);
 
+    setCentralWidget(centralWidget);
+
+    centralWidget->setLayout(centralLayout);
 }
+
+void MainWindow::SetConnections()
+{
+    connect(startButton, SIGNAL(clicked()), timer, SLOT(StartPomodoro()));
+    connect(pauseButton, SIGNAL(clicked()), timer, SLOT(Pause()));
+    connect(breakButton, SIGNAL(clicked()), timer, SLOT(StartBreak()));
+    connect(timer, SIGNAL(FinishedPomodoro()), this, SLOT(AddToFile()));
+    connect(timer, SIGNAL(FinishedBreak()), this, SLOT(AlertForBreak()));
+
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+}
+
 
 void MainWindow::AddToFile()
 {
-
     dingMedia->play();
 
     QString pomodoroStr = "Pomodoro finished  ";
@@ -82,8 +111,7 @@ void MainWindow::LoadHistory()
 {
     QTextStream loadEntries(readHistoryFile);
 
-    /*
-     //Load just todays pomodoros WORK IN PROGRESS
+    //Load just todays pomodoros
     QString tmp;
 
     QDateTime currDate = QDateTime::currentDateTime();
@@ -92,21 +120,20 @@ void MainWindow::LoadHistory()
     while(!loadEntries.atEnd())
     {
         tmp = loadEntries.readLine();
-        QDateTime tmpDate = QDateTime::fromString(tmp, "dd.MM.yy  hh:mm");
-        QString wtf = tmpDate.toString("dd.MM.yy");
+        tmp.contains(yeah);
 
-        if(yeah != wtf)
+        if(tmp.contains(yeah))
         {
-            historyList->addItem(loadEntries.readLine());
+            historyList->addItem(tmp);
         }
 
-    }*/
+    }
 
-
+/*
     //reads all history
     while(!loadEntries.atEnd())
     {
         historyList->addItem(loadEntries.readLine());
-    }
+    }*/
 
 }
