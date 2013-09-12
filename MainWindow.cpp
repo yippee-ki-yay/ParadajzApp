@@ -20,9 +20,21 @@ MainWindow::~MainWindow()
     delete gearPix;
 }
 
+/*This is horrible need to organize my code*/
+
 void MainWindow::Init()
 {
     centralWidget = new QWidget;
+
+    settingsDialog = new SettingsDialog(centralWidget);
+
+    QFile settingsFile("settings.txt", centralWidget);
+    settingsFile.open(QFile::ReadWrite);
+
+    settingsDialog->SetFile(&settingsFile);
+
+    readSettingsFile = new QFile(centralWidget);
+    readSettingsFile->open(QFile::ReadOnly);
 
     dingMedia = Phonon::createPlayer(Phonon::MusicCategory,
                                      Phonon::MediaSource("bell-ring.mp3"));
@@ -84,6 +96,8 @@ void MainWindow::SetConnections()
     connect(breakButton, SIGNAL(clicked()), timer, SLOT(StartBreak()));
     connect(timer, SIGNAL(FinishedPomodoro()), this, SLOT(AddToFile()));
     connect(timer, SIGNAL(FinishedBreak()), this, SLOT(AlertForBreak()));
+
+    connect(settingsAction, SIGNAL(triggered()), settingsDialog, SLOT(show()));
 
     connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
 }

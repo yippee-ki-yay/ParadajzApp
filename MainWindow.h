@@ -23,6 +23,7 @@
 #include <QAction>
 
 #include "Timer.h"
+#include "SettingsDialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -52,8 +53,10 @@ private:
     QAction* quitAction;
 
     Timer* timer;
+    SettingsDialog* settingsDialog;
     QFile* historyFile;
     QFile* readHistoryFile;
+    QFile* readSettingsFile;
     QTextStream* historyStream;
 
     QListWidget* historyList;
