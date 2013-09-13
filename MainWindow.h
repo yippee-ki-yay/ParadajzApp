@@ -19,6 +19,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMenuBar>
+#include <QSettings>
 #include <QMenu>
 #include <QAction>
 
@@ -36,6 +37,7 @@ public:
 public slots:
     void AddToFile();
     void AlertForBreak();
+    void ReadSettings();
 
 private:
     void LoadHistory();
@@ -48,6 +50,7 @@ private:
 
     QWidget* centralWidget;
     QMenu* settingsMenu;
+    QSettings* settings;
     QMenuBar* bar;
     QAction* settingsAction;
     QAction* quitAction;
@@ -56,7 +59,6 @@ private:
     SettingsDialog* settingsDialog;
     QFile* historyFile;
     QFile* readHistoryFile;
-    QFile* readSettingsFile;
     QTextStream* historyStream;
 
     QListWidget* historyList;
@@ -70,6 +72,8 @@ private:
     QPushButton* breakButton;
 
     QPixmap* gearPix;
+
+    int p, b;
 
 };
 

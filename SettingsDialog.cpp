@@ -4,25 +4,51 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
 {
     centralLayout = new QVBoxLayout(this);
 
-    timeLayout = new QHBoxLayout(this);
+    pomodoroTimeLayout = new QHBoxLayout;
 
-    timeLabel = new QLabel("Change Time", this);
+    breakTimeLayout = new QHBoxLayout;
 
-    timeLayout->addWidget(timeLabel);
+    timeLabel = new QLabel("Change Pomodoro time", this);
 
-    centralLayout->addLayout(timeLayout);
+    breakLabel = new QLabel("Change break time", this);
+
+    pomodoroSpin = new QSpinBox(this);
+
+    breakSpin = new QSpinBox(this);
+
+    submitButton = new QPushButton("Set changes", this);
+
+    pomodoroSpin->setValue(25);
+    breakSpin->setValue(5);
+
+    pomodoroTimeLayout->addWidget(timeLabel);
+    pomodoroTimeLayout->addWidget(pomodoroSpin);
+
+    breakTimeLayout->addWidget(breakLabel);
+    breakTimeLayout->addWidget(breakSpin);
+
+    centralLayout->addLayout(pomodoroTimeLayout);
+    centralLayout->addLayout(breakTimeLayout);
+    centralLayout->addWidget(submitButton);
+
+    connect(submitButton, SIGNAL(clicked()), this, SLOT(MakeChanges()));
 
     Qt::WindowFlags flags = Qt::Window
                                 | Qt::WindowMinimizeButtonHint
                                 | Qt::WindowCloseButtonHint;
 
-    setLayout(centralLayout);
     setWindowFlags(flags);
 }
 
-
-void SettingsDialog::SetFile(QFile* settings)
+void SettingsDialog::MakeChanges()
 {
-    QTextStream txtStream(settings);
-    txtStream << "yes";
+    QSettings settings("nescode", "ParadajzApp");
+
+    settings.setValue("Pomodoro", pomodoroSpin->value());
+    settings.setValue("Break", breakSpin->value());
+
+    emit Changed();
+
+    this->close();
 }
+

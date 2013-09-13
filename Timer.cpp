@@ -13,12 +13,18 @@ Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running
     setMinimumSize(400, 200);
 }
 
+void Timer::setTime(int p, int b)
+{
+    m_p = p;
+    m_b = b;
+}
+
 void Timer::StartPomodoro()
 {
     running = true;
     curr_state = POMODORO;
 
-    minut = 24;
+    minut = m_p - 1;
     second = 59;
 
     timer->start();
@@ -31,7 +37,7 @@ void Timer::StartBreak()
 
     curr_state = BREAK;
 
-    minut = 4;
+    minut = m_b - 1;
     second = 59;
 
     timer->start();

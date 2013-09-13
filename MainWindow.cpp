@@ -2,6 +2,7 @@
 
 MainWindow::MainWindow(QWidget* parent): QMainWindow(parent)
 {
+
     Init();
 
     SetUi();
@@ -17,7 +18,6 @@ MainWindow::~MainWindow()
     historyFile->close();
     readHistoryFile->close();
 
-    delete gearPix;
 }
 
 /*This is horrible need to organize my code*/
@@ -28,18 +28,12 @@ void MainWindow::Init()
 
     settingsDialog = new SettingsDialog(centralWidget);
 
-    QFile settingsFile("settings.txt", centralWidget);
-    settingsFile.open(QFile::ReadWrite);
-
-    settingsDialog->SetFile(&settingsFile);
-
-    readSettingsFile = new QFile(centralWidget);
-    readSettingsFile->open(QFile::ReadOnly);
-
     dingMedia = Phonon::createPlayer(Phonon::MusicCategory,
                                      Phonon::MediaSource("bell-ring.mp3"));
 
     gearPix = new QPixmap("gear.png");
+
+    settings = new QSettings("nescode", "ParadajzApp");
 
     settingsAction = new QAction(*gearPix, "&Settings", centralWidget);
 
@@ -52,6 +46,8 @@ void MainWindow::Init()
     centralLayout = new QVBoxLayout;
 
     timer = new Timer(centralWidget);
+
+    ReadSettings();
 
     historyList = new QListWidget(centralWidget);
 
@@ -98,6 +94,7 @@ void MainWindow::SetConnections()
     connect(timer, SIGNAL(FinishedBreak()), this, SLOT(AlertForBreak()));
 
     connect(settingsAction, SIGNAL(triggered()), settingsDialog, SLOT(show()));
+    connect(settingsDialog, SIGNAL(Changed()), this, SLOT(ReadSettings()));
 
     connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
 }
@@ -119,6 +116,14 @@ void MainWindow::AddToFile()
 void MainWindow::AlertForBreak()
 {
     dingMedia->play();
+}
+
+void MainWindow::ReadSettings()
+{
+   p = settings->value("Pomodoro").toInt();
+   b = settings->value("Break").toInt();
+
+   timer->setTime(p, b);
 }
 
 void MainWindow::LoadHistory()

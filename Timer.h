@@ -16,6 +16,8 @@ public:
 
     enum state{POMODORO, BREAK, NONE};
 
+    void setTime(int p, int b);
+
 public slots:
     void StartPomodoro();
     void StartBreak();
@@ -32,6 +34,7 @@ private:
     QTimer* timer;
 
     int minut, second;
+    int m_p, m_b;
     bool running;
     state curr_state;
 };
