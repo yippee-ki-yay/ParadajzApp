@@ -35,6 +35,10 @@ void MainWindow::Init()
 
     settings = new QSettings("nescode", "ParadajzApp");
 
+    settings->setValue("Pomodoro", 25);
+    settings->setValue("Break", 5);
+    settings->setValue("Fourth Pomodoro", 15);
+
     settingsAction = new QAction(*gearPix, "&Settings", centralWidget);
 
     quitAction = new QAction("Quit", centralWidget);
@@ -65,6 +69,7 @@ void MainWindow::Init()
 
     startButton = new QPushButton("Start");
     pauseButton = new QPushButton("Pause");
+    pauseButton->setCheckable(true);
     breakButton = new QPushButton("Break");
 
 }
@@ -100,6 +105,7 @@ void MainWindow::SetConnections()
 }
 
 
+
 void MainWindow::AddToFile()
 {
     dingMedia->play();
@@ -124,6 +130,11 @@ void MainWindow::ReadSettings()
    b = settings->value("Break").toInt();
 
    timer->setTime(p, b);
+}
+
+void MainWindow::SetLongerBreak()
+{
+
 }
 
 void MainWindow::LoadHistory()

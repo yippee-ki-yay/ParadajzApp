@@ -8,6 +8,8 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
 
     breakTimeLayout = new QHBoxLayout;
 
+    longBreakLayout = new QHBoxLayout;
+
     timeLabel = new QLabel("Change Pomodoro time", this);
 
     breakLabel = new QLabel("Change break time", this);
@@ -18,6 +20,10 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
 
     submitButton = new QPushButton("Set changes", this);
 
+    longBreakLabel = new QLabel("Long break", this);
+
+    longBreakSpin = new QSpinBox(this);
+
     pomodoroSpin->setValue(25);
     breakSpin->setValue(5);
 
@@ -27,8 +33,12 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
     breakTimeLayout->addWidget(breakLabel);
     breakTimeLayout->addWidget(breakSpin);
 
+    longBreakLayout->addWidget(longBreakLabel);
+    longBreakLayout->addWidget(longBreakSpin);
+
     centralLayout->addLayout(pomodoroTimeLayout);
     centralLayout->addLayout(breakTimeLayout);
+    centralLayout->addLayout(longBreakLayout);
     centralLayout->addWidget(submitButton);
 
     connect(submitButton, SIGNAL(clicked()), this, SLOT(MakeChanges()));
@@ -46,6 +56,7 @@ void SettingsDialog::MakeChanges()
 
     settings.setValue("Pomodoro", pomodoroSpin->value());
     settings.setValue("Break", breakSpin->value());
+    settings.setValue("Fourth Pomodoro", longBreakSpin->value());
 
     emit Changed();
 

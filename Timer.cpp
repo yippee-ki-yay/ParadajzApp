@@ -1,10 +1,11 @@
 #include "Timer.h"
 
 Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running(false),
-    curr_state(NONE)
+    curr_state(NONE), pomodoro_count(0)
 {
     timer = new QTimer(this);
-    timer->setInterval(1000);
+    timer->setInterval(1);
+
 
     setSegmentStyle(QLCDNumber::Filled);
 
@@ -33,12 +34,19 @@ void Timer::StartPomodoro()
 
 void Timer::StartBreak()
 {
+
     running = true;
 
     curr_state = BREAK;
 
     minut = m_b - 1;
     second = 59;
+
+    if(pomodoro_count == 4)
+    {
+        pomodoro_count = 0;
+        ButtonBox();
+    }
 
     timer->start();
     connect(timer, SIGNAL(timeout()), this, SLOT(Count()), Qt::UniqueConnection);
@@ -65,6 +73,7 @@ void Timer::Count()
     if(minut == 0 && second <= 0)
     {
         timer->stop();
+        pomodoro_count++;
 
 
         if(curr_state == POMODORO)
@@ -103,5 +112,31 @@ void Timer::Count()
     }
 
     display(timeStr);
+}
+
+void Timer::ButtonBox()
+{
+
+    QSettings settings("nescode", "ParadajzApp");
+
+    shortBreakButton = new QPushButton("Short Break", this);
+
+    fourthMessageBox = new QMessageBox(this);
+    fourthMessageBox->setText("You've done four pomodoros in a row, take a break");
+
+    longBreakButton = fourthMessageBox->addButton(tr("Long Break"), QMessageBox::ActionRole);
+    shortBreakButton = fourthMessageBox->addButton(tr("Short Break"), QMessageBox::ActionRole);
+
+    fourthMessageBox->exec();
+
+    if(fourthMessageBox->clickedButton() == longBreakButton)
+    {
+        minut = settings.value("Fourth Pomodoro").toInt();
+    }
+    else if(fourthMessageBox->clickedButton() == shortBreakButton)
+    {
+        minut = settings.value("Break").toInt();
+    }
+
 
 }

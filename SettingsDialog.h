@@ -23,16 +23,20 @@ private slots:
 signals:
     void Changed();
 
-
 private:
     QVBoxLayout* centralLayout;
     QHBoxLayout* pomodoroTimeLayout;
     QHBoxLayout* breakTimeLayout;
+    QHBoxLayout* longBreakLayout;
+
     QLabel* timeLabel;
     QLabel* breakLabel;
     QSpinBox* pomodoroSpin;
     QSpinBox* breakSpin;
     QPushButton* submitButton;
+
+    QLabel* longBreakLabel;
+    QSpinBox* longBreakSpin;
 
 };
 

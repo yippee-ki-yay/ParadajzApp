@@ -4,8 +4,11 @@
 #include <iostream>   //TESTING REMOVE
 
 #include <QLCDNumber>
+#include <QMessageBox>
+#include <QPushButton>
 #include <QTimer>
 #include <QString>
+#include <QSettings>
 
 class Timer : public QLCDNumber
 {
@@ -31,12 +34,20 @@ signals:
     void FinishedBreak();
 
 private:
+    void ButtonBox();
+
     QTimer* timer;
+
+
+    QMessageBox* fourthMessageBox;
+    QPushButton* longBreakButton;
+    QPushButton* shortBreakButton;
 
     int minut, second;
     int m_p, m_b;
     bool running;
     state curr_state;
+    int pomodoro_count;
 };
 
 #endif // TIMER_H
