@@ -4,7 +4,7 @@ Timer::Timer(QWidget* parent) : QLCDNumber(parent), minut(0), second(0), running
     curr_state(NONE), pomodoro_count(0)
 {
     timer = new QTimer(this);
-    timer->setInterval(1);
+    timer->setInterval(1000);
 
 
     setSegmentStyle(QLCDNumber::Filled);

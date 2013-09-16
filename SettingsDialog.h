@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QSettings>
+#include <QComboBox>
 
 class SettingsDialog : public QDialog
 {
@@ -25,9 +26,11 @@ signals:
 
 private:
     QVBoxLayout* centralLayout;
+
     QHBoxLayout* pomodoroTimeLayout;
     QHBoxLayout* breakTimeLayout;
     QHBoxLayout* longBreakLayout;
+    QHBoxLayout* historyLayout;
 
     QLabel* timeLabel;
     QLabel* breakLabel;
@@ -37,6 +40,9 @@ private:
 
     QLabel* longBreakLabel;
     QSpinBox* longBreakSpin;
+
+    QLabel* historyLabel;
+    QComboBox* historyCombo;
 
 };
 

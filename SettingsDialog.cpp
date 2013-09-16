@@ -10,6 +10,8 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
 
     longBreakLayout = new QHBoxLayout;
 
+    historyLayout = new QHBoxLayout;
+
     timeLabel = new QLabel("Change Pomodoro time", this);
 
     breakLabel = new QLabel("Change break time", this);
@@ -24,6 +26,13 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
 
     longBreakSpin = new QSpinBox(this);
 
+    historyCombo = new QComboBox(this);
+    historyCombo->addItem("None");
+    historyCombo->addItem("Today");
+    historyCombo->addItem("All");
+
+    historyLabel = new QLabel("History settings: ");
+
     pomodoroSpin->setValue(25);
     breakSpin->setValue(5);
 
@@ -36,9 +45,13 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
     longBreakLayout->addWidget(longBreakLabel);
     longBreakLayout->addWidget(longBreakSpin);
 
+    historyLayout->addWidget(historyLabel);
+    historyLayout->addWidget(historyCombo);
+
     centralLayout->addLayout(pomodoroTimeLayout);
     centralLayout->addLayout(breakTimeLayout);
     centralLayout->addLayout(longBreakLayout);
+    centralLayout->addLayout(historyLayout);
     centralLayout->addWidget(submitButton);
 
     connect(submitButton, SIGNAL(clicked()), this, SLOT(MakeChanges()));
@@ -57,6 +70,7 @@ void SettingsDialog::MakeChanges()
     settings.setValue("Pomodoro", pomodoroSpin->value());
     settings.setValue("Break", breakSpin->value());
     settings.setValue("Fourth Pomodoro", longBreakSpin->value());
+    settings.setValue("History", historyCombo->currentIndex());
 
     emit Changed();
 

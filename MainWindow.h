@@ -38,11 +38,9 @@ public slots:
     void AddToFile();
     void AlertForBreak();
     void ReadSettings();
-    void SetLongerBreak();
-
-private:
     void LoadHistory();
 
+private:
     void Init();
     void SetConnections();
     void SetUi();

@@ -38,6 +38,7 @@ void MainWindow::Init()
     settings->setValue("Pomodoro", 25);
     settings->setValue("Break", 5);
     settings->setValue("Fourth Pomodoro", 15);
+    settings->setValue("History", 1);
 
     settingsAction = new QAction(*gearPix, "&Settings", centralWidget);
 
@@ -100,6 +101,7 @@ void MainWindow::SetConnections()
 
     connect(settingsAction, SIGNAL(triggered()), settingsDialog, SLOT(show()));
     connect(settingsDialog, SIGNAL(Changed()), this, SLOT(ReadSettings()));
+    connect(settingsDialog, SIGNAL(Changed()), this, SLOT(LoadHistory()));
 
     connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
 }
@@ -132,38 +134,48 @@ void MainWindow::ReadSettings()
    timer->setTime(p, b);
 }
 
-void MainWindow::SetLongerBreak()
-{
-
-}
 
 void MainWindow::LoadHistory()
 {
+    int value = settings->value("History").toInt();
+
     QTextStream loadEntries(readHistoryFile);
 
-    //Load just todays pomodoros
-    QString tmp;
+    historyList->clear();
 
-    QDateTime currDate = QDateTime::currentDateTime();
-    QString yeah = currDate.toString("dd.MM.yy");
-
-    while(!loadEntries.atEnd())
+    if(value == 1)
     {
-        tmp = loadEntries.readLine();
-        tmp.contains(yeah);
+         loadEntries.device()->seek(0);
 
-        if(tmp.contains(yeah))
+        //Load just todays pomodoros
+        QString tmp;
+
+        QDateTime currDate = QDateTime::currentDateTime();
+        QString yeah = currDate.toString("dd.MM.yy");
+
+        while(!loadEntries.atEnd())
         {
-            historyList->addItem(tmp);
+            tmp = loadEntries.readLine();
+            tmp.contains(yeah);
+
+            if(tmp.contains(yeah))
+            {
+                historyList->addItem(tmp);
+            }
+
         }
 
-    }
 
-/*
-    //reads all history
-    while(!loadEntries.atEnd())
+    }
+    else if(value == 2)
     {
-        historyList->addItem(loadEntries.readLine());
-    }*/
+         loadEntries.device()->seek(0);
+
+        //reads all history
+        while(!loadEntries.atEnd())
+        {
+            historyList->addItem(loadEntries.readLine());
+        }
+    }
 
 }
