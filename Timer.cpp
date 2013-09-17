@@ -73,11 +73,13 @@ void Timer::Count()
     if(minut == 0 && second <= 0)
     {
         timer->stop();
-        pomodoro_count++;
-
 
         if(curr_state == POMODORO)
+        {
+            pomodoro_count++;
             emit FinishedPomodoro();
+        }
+
         if(curr_state == BREAK)
             emit FinishedBreak();
     }

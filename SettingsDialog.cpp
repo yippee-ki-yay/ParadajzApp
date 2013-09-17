@@ -25,6 +25,7 @@ SettingsDialog::SettingsDialog(QWidget* parent): QDialog(parent)
     longBreakLabel = new QLabel("Long break", this);
 
     longBreakSpin = new QSpinBox(this);
+    longBreakSpin->setValue(15);
 
     historyCombo = new QComboBox(this);
     historyCombo->addItem("None");
